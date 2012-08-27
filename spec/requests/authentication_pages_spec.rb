@@ -80,6 +80,19 @@ describe "Authentication" do
 				end
 			end
 
+			describe "in the Projectposts controller" do
+
+				describe "submitting to the create action" do
+					before { post projectposts_path }
+					specify { response.should redirect_to(signin_path) }
+				end
+
+				describe "submitting to the destroy action" do
+					before { delete projectpost_path(FactoryGirl.create(:projectpost)) }
+					specify { response.should redirect_to(signin_path) }
+				end
+			end
+
 			describe "in the Users controller" do 
 			
 				describe "visiting the edit page" do 
@@ -98,7 +111,7 @@ describe "Authentication" do
 				end
 			end
 		end
-		
+
 		describe "as wrong user" do 
 			let(:user) { FactoryGirl.create(:user) }
 			let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }

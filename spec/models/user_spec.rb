@@ -28,6 +28,8 @@ describe User do
 	it { should respond_to(:password_confirmation) }
 	it { should respond_to(:remember_token) }
 	it { should respond_to(:authenticate) }
+	it { should respond_to(:projectposts) }
+	it { should respond_to(:feed) }
 	it { should respond_to(:admin) }
 	it { should respond_to(:authenticate) }
 	
@@ -132,5 +134,38 @@ describe User do
 	describe "remember token" do 
 		before { @user.save }
 		its(:remember_token) { should_not be_blank }
+	end
+
+	describe "projectpost associations" do
+
+		before { @user.save }
+		let!(:older_projectpost) do
+			FactoryGirl.create(:projectpost, user: @user, created_at: 1.day.ago)
+		end
+		let!(:newer_projectpost) do
+			FactoryGirl.create(:projectpost, user: @user, created_at: 1.hour.ago)
+		end
+
+		it "should have the right projectposts in the right order" do
+			@user.projectposts.should == [newer_projectpost, older_projectpost]
+		end
+
+		it "should destroy associated projectposts" do 
+			projectposts = @user.projectposts
+			@user.destroy
+			projectposts.each do |projectpost|
+				Projectpost.find_by_id(projectpost.id).should be_nil
+			end
+		end
+
+		describe "status" do
+			let(:unfollowed_post) do
+				FactoryGirl.create(:projectpost, user: FactoryGirl.create(:user))
+			end
+
+			its(:feed) { should include(newer_projectpost) }
+			its(:feed) { should include(older_projectpost) }
+			its(:feed) { should_not include(unfollowed_post) }
+		end
 	end
 end

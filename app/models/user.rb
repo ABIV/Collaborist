@@ -10,8 +10,9 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :email, :name, :password, :password_confirmation
+  attr_accessible :name, :email, :password, :password_confirmation
   has_secure_password
+  has_many :projectposts, dependent: :destroy
   
   before_save { self.email.downcase! }
   before_save :create_remember_token
@@ -22,6 +23,11 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
   
+
+  def feed 
+    #this is a prliminary snippet, flesh out with "Following User Code"
+    Projectpost.where("user_id = ?", id)
+  end
   
   private 
   

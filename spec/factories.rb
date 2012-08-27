@@ -9,4 +9,11 @@ FactoryGirl.define do
 			admin true
 		end
 	end
+
+	factory :projectpost do
+		belief	"Lorem ipsum.paragraphs(3)"
+		name 	"Lorem ipsum.sentence"
+		link	"Lorem ipsum.com"
+		user
+	end
 end

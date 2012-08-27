@@ -52,10 +52,21 @@ describe "User pages" do
 	
 	describe "profile page" do 
 		let(:user) { FactoryGirl.create(:user) }
+		let!(:m1) { FactoryGirl.create(:projectpost, user: user, belief: "Foo", name:"Baz") }
+		let!(:m2) { FactoryGirl.create(:projectpost, user: user, belief:"Bar", name: "Stuff") }
+		
 		before { visit user_path(user) }
 		
 		it { should have_selector('h1',		text: user.name) }
 		it { should have_selector('title',	text: user.name) }
+
+		describe "projectposts" do
+			it { should have_content(m1.belief) }
+			it { should have_content(m1.name) }
+			it { should have_content(m2.belief) }
+			it { should have_content(m2.name) }
+			it { should have_content(user.projectposts.count) }
+		end
 	end
 	
 	describe "signup page" do 

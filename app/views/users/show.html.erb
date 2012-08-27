@@ -7,4 +7,17 @@
 			Joined: <%= @user.created_at %>
 		</section>
 	</aside>
+
+	<div class="span8">
+		<% if @user.projectposts.any? %>
+			<h3>Projects (<%= @user.projectposts.count %>)</h3>
+			<ol class="projectposts">
+				<%= render @projectposts %>
+			</ol>
+			<%= will_paginate @projectposts %>
+
+		<% else %>
+			<h3><%= @user.name %> doesn't have any projects yet.</h3>
+		<% end %>
+	</div>
 </div>

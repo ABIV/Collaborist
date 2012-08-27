@@ -1,0 +1,10 @@
+<li>
+	<span class="proj-name"><h4><%= projectpost.name %></h4></span>
+	<span class="proj-belief"><%= projectpost.belief %></span>
+	<span class="proj-URL"><%= projectpost.link %></span>
+	<span class="timestamp">Posted <%= time_ago_in_words(projectpost.created_at) %> ago.
+	</span>
+	<% if current_user?(projectpost.user) %>
+		<%= link_to "DELETE", projectpost, method: :delete, data: { confirm: "You sure?" }, title: projectpost.name %>
+		<% end %>
+</li>

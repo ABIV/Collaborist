@@ -1,6 +1,24 @@
+<% if signed_in? %>
+	<div class="row">
+		<aside class="span4">
+			<section>
+				<%= render 'shared/user_info' %>
+			</section>
+			<section>
+				<%= render 'shared/projectpost_form' %>
+			</section>
+		</aside>
+
+	<div class="span8">
+		<h3>Recent Projects</h3>
+		<%= render 'shared/feed' %>
+	</div>
+</div>
+<% else %>	
 <div class="center hero-unit">
 	<h1>Collaborist</h1>
 	
 	<h2>This is the future home for the new Collaborist.me</h2>
 	<%= link_to "Sign up now !", signup_path, class: "btn btn-large btn-primary" %>
 </div>
+<% end %>
